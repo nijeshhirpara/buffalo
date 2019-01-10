@@ -1,6 +1,8 @@
 package buffalo
 
 import (
+	"io"
+
 	"github.com/gobuffalo/envy"
 	"github.com/sirupsen/logrus"
 )
@@ -44,9 +46,10 @@ func (l logrusWrapper) WithFields(m map[string]interface{}) Logger {
 /*
 	Example: time="2016-12-01T21:02:07-05:00" level=info duration=225.283µs human_size="106 B" method=GET path="/" render=199.79µs request_id=2265736089 size=106 status=200
 */
-func NewLogger(level string) Logger {
+func NewLogger(level string, output io.Writer) Logger {
 	dev := envy.Get("GO_ENV", "development") == "development"
 	l := logrus.New()
+	l.Out = output
 	l.Level, _ = logrus.ParseLevel(level)
 	l.Formatter = &textFormatter{
 		ForceColors: dev,

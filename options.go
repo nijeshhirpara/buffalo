@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/fatih/color"
@@ -104,7 +105,7 @@ func optionsWithDefaults(opts Options) Options {
 	opts.Context, opts.cancel = context.WithCancel(opts.Context)
 
 	if opts.Logger == nil {
-		opts.Logger = NewLogger(opts.LogLevel)
+		opts.Logger = NewLogger(opts.LogLevel, os.Stderr)
 	}
 
 	pop.Log = func(s string, args ...interface{}) {
